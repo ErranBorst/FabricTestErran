@@ -1,0 +1,18 @@
+semantic_model:
+  name: sales_summary
+  description: Semantic contract for reporting on gold sales summaries.
+  source_table: gold_order_sales_summary
+  dimensions:
+    - name: order_date
+      type: date
+    - name: product_category
+      type: string
+    - name: order_status
+      type: string
+  measures:
+    - name: total_orders
+      expression: order_count
+      aggregation: sum
+    - name: total_revenue
+      expression: total_revenue
+      aggregation: sum
