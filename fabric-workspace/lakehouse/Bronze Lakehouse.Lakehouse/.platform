@@ -1,0 +1,12 @@
+{
+    "version": "2.0",
+    "$schema": "https://developer.microsoft.com/json-schemas/fabric/platform/platformProperties.json",
+    "config": {
+        "logicalId": "f4153368-51f4-4bbc-b529-a6d0bc1d4db4"
+    },
+    "metadata": {
+        "type": "Lakehouse",
+        "displayName": "Bronze Lakehouse",
+        "description": "Raw landing-zone lakehouse for Fabric ingest assets."
+    }
+}

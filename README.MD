@@ -2,8 +2,17 @@
 
 This repository contains a starter Microsoft Fabric ETL project with dedicated layers for ingest, lakehouse design, operations, semantic outputs, and dbt-based transformations.
 
+## Fabric Git Integration
+
+Connect the Fabric workspace to the `fabric-workspace` folder in this repository, not to the repository root.
+
+- `fabric-workspace` contains Fabric-recognizable Git item folders such as `.Notebook`, `.Lakehouse`, and `.DataPipeline` items.
+- `src/Fabric` remains the engineering project tree with supporting notebooks, dbt code, templates, and documentation.
+- Generic project files in `src/Fabric` are useful for development, but Fabric Source Control does not import them as workspace items unless they are expressed in Fabric item format.
+
 ## Structure
 
+- `fabric-workspace`: Fabric Git sync root with supported item definitions.
 - `src/Fabric/ingest`: notebooks that land raw data into a Fabric lakehouse.
 - `src/Fabric/lakehouse`: documentation for the intended bronze, silver, and gold lakehouse layout.
 - `src/Fabric/ops`: orchestration and operational templates.

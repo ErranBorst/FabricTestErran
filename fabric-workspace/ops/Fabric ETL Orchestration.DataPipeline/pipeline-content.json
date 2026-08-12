@@ -1,0 +1,10 @@
+{
+    "properties": {
+        "description": "Starter Fabric ETL pipeline. Sync this item into Fabric, then add or rebind notebook activities in the Fabric UI after the notebooks are imported.",
+        "activities": [],
+        "annotations": [
+            "ingest notebook: Ingest Dummy Orders",
+            "transform notebook: Run dbt for Fabric Lakehouse"
+        ]
+    }
+}

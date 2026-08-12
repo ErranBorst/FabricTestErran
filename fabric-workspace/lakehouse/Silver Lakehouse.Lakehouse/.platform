@@ -1,0 +1,12 @@
+{
+    "version": "2.0",
+    "$schema": "https://developer.microsoft.com/json-schemas/fabric/platform/platformProperties.json",
+    "config": {
+        "logicalId": "650ef234-b8e3-4850-a99c-d722ca6f5228"
+    },
+    "metadata": {
+        "type": "Lakehouse",
+        "displayName": "Silver Lakehouse",
+        "description": "Conformed lakehouse for validated and transformed Fabric data."
+    }
+}
