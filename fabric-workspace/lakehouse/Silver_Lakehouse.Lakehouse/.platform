@@ -2,11 +2,11 @@
     "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
     "metadata": {
         "type": "Lakehouse",
-        "displayName": "Bronze Lakehouse",
-        "description": "Raw landing-zone lakehouse for Fabric ingest assets."
+        "displayName": "Silver_Lakehouse",
+        "description": "Conformed lakehouse for validated and transformed Fabric data."
     },
     "config": {
         "version": "2.0",
-        "logicalId": "f4153368-51f4-4bbc-b529-a6d0bc1d4db4"
+        "logicalId": "650ef234-b8e3-4850-a99c-d722ca6f5228"
     }
 }
