@@ -1,12 +1,12 @@
 {
-    "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
-    "metadata": {
-        "type": "Notebook",
-        "displayName": "Run dbt for Fabric Lakehouse",
-        "description": "Installs dbt-fabricspark and runs the repository dbt project inside a Fabric notebook."
-    },
-    "config": {
-        "version": "2.0",
-        "logicalId": "5bf908da-2500-4db7-8fa4-528ad9eaf801"
-    }
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "Run dbt for Fabric Lakehouse",
+    "description": "Installs dbt-fabricspark and runs the repository dbt project inside a Fabric notebook."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "5bf908da-2500-4db7-8fa4-528ad9eaf801"
+  }
 }

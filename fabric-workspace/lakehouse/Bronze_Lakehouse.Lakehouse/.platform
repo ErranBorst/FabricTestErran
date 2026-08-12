@@ -1,12 +1,12 @@
 {
-    "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
-    "metadata": {
-        "type": "Lakehouse",
-        "displayName": "Bronze_Lakehouse",
-        "description": "Raw landing-zone lakehouse for Fabric ingest assets."
-    },
-    "config": {
-        "version": "2.0",
-        "logicalId": "f4153368-51f4-4bbc-b529-a6d0bc1d4db4"
-    }
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Lakehouse",
+    "displayName": "Bronze_Lakehouse",
+    "description": "Raw landing-zone lakehouse for Fabric ingest assets."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "f4153368-51f4-4bbc-b529-a6d0bc1d4db4"
+  }
 }
