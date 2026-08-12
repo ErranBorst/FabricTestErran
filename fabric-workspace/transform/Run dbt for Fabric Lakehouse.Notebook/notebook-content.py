@@ -15,11 +15,18 @@
 # META   }
 # META }
 
-# MARKDOWN ********************
+# CELL ********************
 
 # # Run dbt for Fabric Lakehouse
 #
 # This notebook installs dbt-fabricspark, writes a local Fabric Notebook auth profile, and runs the repository dbt project.
+
+# METADATA ********************
+
+# META {
+# META   "language": "markdown",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
@@ -29,9 +36,23 @@ lakehouse_name = "bronze_lakehouse"
 schema_name = "bronze_lakehouse"
 dbt_project_dir = "/lakehouse/default/Files/FabricTestErran/src/Fabric/transform/dbt_fabric_project"
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 %pip install -U dbt-fabricspark
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
@@ -63,9 +84,23 @@ fabric_etl_project:
 (dbt_dir / "profiles.yml").write_text(profiles_yml, encoding="utf-8")
 print((dbt_dir / "profiles.yml").read_text(encoding="utf-8"))
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 %cd {dbt_project_dir}
 !dbt debug
 !dbt deps
 !dbt build
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }

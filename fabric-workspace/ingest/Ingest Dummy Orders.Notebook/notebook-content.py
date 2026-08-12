@@ -15,11 +15,18 @@
 # META   }
 # META }
 
-# MARKDOWN ********************
+# CELL ********************
 
 # # Ingest Dummy Orders Into Fabric Lakehouse
 #
 # This notebook creates a raw orders dataset and saves it as a Delta table in the attached Fabric lakehouse.
+
+# METADATA ********************
+
+# META {
+# META   "language": "markdown",
+# META   "language_group": "synapse_pyspark"
+# META }
 
 # CELL ********************
 
@@ -43,11 +50,32 @@ df = (
 )
 display(df)
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 df.write.mode("overwrite").format("delta").saveAsTable(target_table)
 print(f"Table {target_table} refreshed with {df.count()} rows.")
 
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
+
 # CELL ********************
 
 display(spark.table(target_table))
+
+# METADATA ********************
+
+# META {
+# META   "language": "python",
+# META   "language_group": "synapse_pyspark"
+# META }
