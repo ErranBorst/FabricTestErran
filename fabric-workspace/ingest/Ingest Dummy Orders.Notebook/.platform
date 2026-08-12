@@ -1,12 +1,12 @@
 {
-    "version": "2.0",
-    "$schema": "https://developer.microsoft.com/json-schemas/fabric/platform/platformProperties.json",
-    "config": {
-        "logicalId": "d1c7eab4-3220-4ccd-8c86-b5947bb2d6a1"
-    },
+    "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
     "metadata": {
         "type": "Notebook",
         "displayName": "Ingest Dummy Orders",
         "description": "Creates a raw dummy orders Delta table in the attached Fabric lakehouse."
+    },
+    "config": {
+        "version": "2.0",
+        "logicalId": "d1c7eab4-3220-4ccd-8c86-b5947bb2d6a1"
     }
 }

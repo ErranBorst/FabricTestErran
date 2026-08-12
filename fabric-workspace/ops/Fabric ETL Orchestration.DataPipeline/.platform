@@ -1,12 +1,12 @@
 {
-    "version": "2.0",
-    "$schema": "https://developer.microsoft.com/json-schemas/fabric/platform/platformProperties.json",
-    "config": {
-        "logicalId": "881f3cbf-3c2d-42b8-a5b7-1d5cc9f3e22d"
-    },
+    "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
     "metadata": {
         "type": "DataPipeline",
         "displayName": "Fabric ETL Orchestration",
         "description": "Starter ETL orchestration pipeline for ingest and dbt notebook execution."
+    },
+    "config": {
+        "version": "2.0",
+        "logicalId": "881f3cbf-3c2d-42b8-a5b7-1d5cc9f3e22d"
     }
 }
