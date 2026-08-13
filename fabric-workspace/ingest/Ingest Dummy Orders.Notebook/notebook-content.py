@@ -10,7 +10,7 @@
 # META     "lakehouse": {
 # META       "default_lakehouse": "f4153368-51f4-4bbc-b529-a6d0bc1d4db4",
 # META       "default_lakehouse_name": "Bronze_Lakehouse",
-# META       "default_lakehouse_workspace_id": "",
+# META       "default_lakehouse_workspace_id": "efce90bf-d5cf-41ce-bb1f-d83e2889332f",
 # META       "known_lakehouses": [
 # META         {
 # META           "id": "f4153368-51f4-4bbc-b529-a6d0bc1d4db4"
@@ -47,8 +47,9 @@
 from pyspark.sql import Row
 from pyspark.sql.functions import col, current_timestamp, lit
 
+lakehouse_name = "Bronze_Lakehouse"
 target_table_name = "raw_dummy_orders"
-target_table = f"dbo.{target_table_name}"
+target_table = f"{lakehouse_name}.dbo.{target_table_name}"
 rows = [
     Row(order_id=1, customer_id=101, product_category="laptop", quantity=1, unit_price=1200.0, order_status="created", order_date="2026-08-01"),
     Row(order_id=2, customer_id=102, product_category="monitor", quantity=2, unit_price=340.0, order_status="shipped", order_date="2026-08-02"),
