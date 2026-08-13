@@ -78,17 +78,17 @@ workspace_id = resolve_config_value(
   "workspace_id",
   runtime_context.get("currentWorkspaceId"),
   runtime_context.get("defaultLakehouseWorkspaceId"),
-  "<workspace_id>",
+  "efce90bf-d5cf-41ce-bb1f-d83e2889332f",
 )
 lakehouse_id = resolve_config_value(
   "lakehouse_id",
   runtime_context.get("defaultLakehouseId"),
-  "<lakehouse_id>",
+  "45dad4c7-60f6-4961-9e71-583997fcb191",
 )
 lakehouse_name = resolve_config_value(
   "lakehouse_name",
   runtime_context.get("defaultLakehouseName"),
-  "<lakehouse_name>",
+  "bronze_lakehouse",
 )
 schema_name = resolve_config_value("schema_name", lakehouse_name)
 
