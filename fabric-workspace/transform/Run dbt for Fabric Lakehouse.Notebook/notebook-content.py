@@ -24,7 +24,7 @@
 # METADATA ********************
 
 # META {
-# META   "language": "markdown",
+# META   "language": "python",
 # META   "language_group": "synapse_pyspark"
 # META }
 
@@ -58,10 +58,39 @@ dbt_project_dir = "/lakehouse/default/Files/FabricTestErran/src/Fabric/transform
 
 from pathlib import Path
 
-workspace_id = globals().get("workspace_id", "<fabric-workspace-guid>")
-lakehouse_id = globals().get("lakehouse_id", "<fabric-lakehouse-guid>")
-lakehouse_name = globals().get("lakehouse_name", "bronze_lakehouse")
-schema_name = globals().get("schema_name", lakehouse_name)
+try:
+  runtime_context = notebookutils.runtime.context
+except NameError:
+  runtime_context = {}
+
+def resolve_config_value(global_name, *fallbacks):
+  value = globals().get(global_name)
+  if isinstance(value, str) and value and not (value.startswith("<") and value.endswith(">")):
+    return value
+
+  for fallback in fallbacks:
+    if isinstance(fallback, str) and fallback:
+      return fallback
+
+  return value
+
+workspace_id = resolve_config_value(
+  "workspace_id",
+  runtime_context.get("currentWorkspaceId"),
+  runtime_context.get("defaultLakehouseWorkspaceId"),
+  "<workspace_id>",
+)
+lakehouse_id = resolve_config_value(
+  "lakehouse_id",
+  runtime_context.get("defaultLakehouseId"),
+  "<lakehouse_id>",
+)
+lakehouse_name = resolve_config_value(
+  "lakehouse_name",
+  runtime_context.get("defaultLakehouseName"),
+  "<lakehouse_name>",
+)
+schema_name = resolve_config_value("schema_name", lakehouse_name)
 
 missing_config = [
   name
