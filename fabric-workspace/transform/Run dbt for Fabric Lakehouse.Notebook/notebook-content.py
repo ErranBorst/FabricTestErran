@@ -30,8 +30,8 @@
 
 # CELL ********************
 
-workspace_id = "<fabric-workspace-guid>"
-lakehouse_id = "<fabric-lakehouse-guid>"
+workspace_id = "efce90bf-d5cf-41ce-bb1f-d83e2889332f"
+lakehouse_id = "45dad4c7-60f6-4961-9e71-583997fcb191"
 lakehouse_name = "bronze_lakehouse"
 schema_name = "bronze_lakehouse"
 dbt_project_dir = "/lakehouse/default/Files/FabricTestErran/src/Fabric/transform/dbt_fabric_project"
@@ -57,6 +57,26 @@ dbt_project_dir = "/lakehouse/default/Files/FabricTestErran/src/Fabric/transform
 # CELL ********************
 
 from pathlib import Path
+
+workspace_id = globals().get("workspace_id", "<fabric-workspace-guid>")
+lakehouse_id = globals().get("lakehouse_id", "<fabric-lakehouse-guid>")
+lakehouse_name = globals().get("lakehouse_name", "bronze_lakehouse")
+schema_name = globals().get("schema_name", lakehouse_name)
+
+missing_config = [
+  name
+  for name, value in {
+    "workspace_id": workspace_id,
+    "lakehouse_id": lakehouse_id,
+  }.items()
+  if value.startswith("<") and value.endswith(">")
+]
+
+if missing_config:
+  raise ValueError(
+    "Set these notebook variables before running the dbt profile cell: "
+    + ", ".join(missing_config)
+  )
 
 dbt_dir = Path.home() / ".dbt"
 dbt_dir.mkdir(parents=True, exist_ok=True)
@@ -92,6 +112,11 @@ print((dbt_dir / "profiles.yml").read_text(encoding="utf-8"))
 # META }
 
 # CELL ********************
+
+dbt_project_dir = globals().get(
+  "dbt_project_dir",
+  "/lakehouse/default/Files/FabricTestErran/src/Fabric/transform/dbt_fabric_project",
+)
 
 %cd {dbt_project_dir}
 !dbt debug
