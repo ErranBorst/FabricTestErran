@@ -8,8 +8,8 @@
 # META   },
 # META   "dependencies": {
 # META     "lakehouse": {
-# META       "default_lakehouse": "",
-# META       "default_lakehouse_name": "Bronze Lakehouse",
+# META       "default_lakehouse": "f4153368-51f4-4bbc-b529-a6d0bc1d4db4",
+# META       "default_lakehouse_name": "Bronze_Lakehouse",
 # META       "default_lakehouse_workspace_id": ""
 # META     }
 # META   }
@@ -34,6 +34,7 @@ from pyspark.sql import Row
 from pyspark.sql.functions import col, current_timestamp, lit
 
 target_table = "raw_dummy_orders"
+bronze_table_path = f"/lakehouse/default/Tables/{target_table}"
 rows = [
     Row(order_id=1, customer_id=101, product_category="laptop", quantity=1, unit_price=1200.0, order_status="created", order_date="2026-08-01"),
     Row(order_id=2, customer_id=102, product_category="monitor", quantity=2, unit_price=340.0, order_status="shipped", order_date="2026-08-02"),
@@ -59,8 +60,14 @@ display(df)
 
 # CELL ********************
 
-df.write.mode("overwrite").format("delta").saveAsTable(target_table)
-print(f"Table {target_table} refreshed with {df.count()} rows.")
+(
+    df.write.mode("overwrite")
+    .format("delta")
+    .option("overwriteSchema", "true")
+    .save(bronze_table_path)
+)
+spark.sql(f"CREATE TABLE IF NOT EXISTS {target_table} USING DELTA LOCATION '{bronze_table_path}'")
+print(f"Bronze table {target_table} refreshed at {bronze_table_path} with {df.count()} rows.")
 
 # METADATA ********************
 
@@ -71,7 +78,7 @@ print(f"Table {target_table} refreshed with {df.count()} rows.")
 
 # CELL ********************
 
-display(spark.table(target_table))
+display(spark.read.format("delta").load(bronze_table_path))
 
 # METADATA ********************
 
