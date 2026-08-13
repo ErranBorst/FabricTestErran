@@ -8,26 +8,23 @@
 # META   },
 # META   "dependencies": {
 # META     "lakehouse": {
-# META       "default_lakehouse": "f4153368-51f4-4bbc-b529-a6d0bc1d4db4",
+# META       "default_lakehouse": "45dad4c7-60f6-4961-9e71-583997fcb191",
 # META       "default_lakehouse_name": "Bronze_Lakehouse",
-# META       "default_lakehouse_workspace_id": "",
+# META       "default_lakehouse_workspace_id": "efce90bf-d5cf-41ce-bb1f-d83e2889332f",
 # META       "known_lakehouses": [
 # META         {
-# META           "id": "f4153368-51f4-4bbc-b529-a6d0bc1d4db4"
+# META           "id": "45dad4c7-60f6-4961-9e71-583997fcb191"
 # META         }
 # META       ]
 # META     },
 # META     "warehouse": {
-# META       "default_warehouse": "5ef51be7-88a2-44fa-9ed3-0b70b8bda3d7",
-# META       "known_warehouses": [
-# META         {
-# META           "id": "5ef51be7-88a2-44fa-9ed3-0b70b8bda3d7",
-# META           "type": "Lakewarehouse"
-# META         }
-# META       ]
+# META       "known_warehouses": []
 # META     }
 # META   }
 # META }
+
+# MARKDOWN ********************
+
 
 # CELL ********************
 
