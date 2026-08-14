@@ -97,7 +97,7 @@ display(df)
 
 spark.sql("""
     CREATE TABLE IF NOT EXISTS lh_bronze.dbo.raw_customers (
-        customer_id INT,
+        customer_id BIGINT,
         first_name STRING,
         last_name STRING,
         email STRING,

@@ -47,7 +47,7 @@
 import random
 
 from pyspark.sql import Row
-from pyspark.sql.functions import current_timestamp, lit
+from pyspark.sql.functions import col, current_timestamp, lit
 
 ORDERS_TABLE = "lh_bronze.dbo.raw_sales_orders"
 PRODUCTS_TABLE = "lh_bronze.dbo.raw_products"
@@ -113,6 +113,10 @@ for order_id in pending_order_ids:
 if rows:
     df = (
         spark.createDataFrame(rows)
+        .withColumn("order_line_id", col("order_line_id").cast("int"))
+        .withColumn("order_id", col("order_id").cast("int"))
+        .withColumn("product_id", col("product_id").cast("int"))
+        .withColumn("quantity", col("quantity").cast("int"))
         .withColumn("source_system", lit("sales_demo"))
         .withColumn("ingested_at", current_timestamp())
     )

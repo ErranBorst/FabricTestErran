@@ -60,12 +60,12 @@ STATUS_WEIGHTS = [0.35, 0.25, 0.35, 0.05]
 
 spark.sql("""
     CREATE TABLE IF NOT EXISTS lh_bronze.dbo.raw_sales_orders (
-        order_id INT,
-        customer_id INT,
+        order_id BIGINT,
+        customer_id BIGINT,
         order_date TIMESTAMP,
         order_status STRING,
         shipping_country STRING,
-        batch_id INT,
+        batch_id BIGINT,
         source_system STRING,
         ingested_at TIMESTAMP
     ) USING DELTA

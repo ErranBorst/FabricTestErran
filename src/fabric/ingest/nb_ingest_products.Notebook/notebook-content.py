@@ -93,7 +93,7 @@ display(df)
 
 spark.sql("""
     CREATE TABLE IF NOT EXISTS lh_bronze.dbo.raw_products (
-        product_id INT,
+        product_id BIGINT,
         product_name STRING,
         category STRING,
         unit_price DOUBLE,

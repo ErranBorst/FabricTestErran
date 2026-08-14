@@ -60,8 +60,8 @@ PAYMENT_METHODS = ["ideal", "credit_card", "paypal", "bank_transfer"]
 
 spark.sql("""
     CREATE TABLE IF NOT EXISTS lh_bronze.dbo.raw_payments (
-        payment_id INT,
-        order_id INT,
+        payment_id BIGINT,
+        order_id BIGINT,
         payment_date TIMESTAMP,
         amount DOUBLE,
         payment_method STRING,

@@ -76,10 +76,10 @@ display(df)
 
 spark.sql("""
     CREATE TABLE IF NOT EXISTS lh_bronze.dbo.raw_orders (
-        order_id INT,
-        customer_id INT,
+        order_id BIGINT,
+        customer_id BIGINT,
         product_category STRING,
-        quantity INT,
+        quantity BIGINT,
         unit_price DOUBLE,
         order_status STRING,
         order_date DATE,
