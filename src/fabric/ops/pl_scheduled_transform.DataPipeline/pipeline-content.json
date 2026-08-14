@@ -4,7 +4,7 @@
       {
         "type": "TridentNotebook",
         "typeProperties": {
-          "notebookId": "<<TRANSFORM_NOTEBOOK_ID>>",
+          "notebookId": "d1c7eab4-3220-4ccd-8c86-b5947bb2d6a1",
           "workspaceId": "00000000-0000-0000-0000-000000000000"
         },
         "policy": {
@@ -14,7 +14,7 @@
           "secureInput": false,
           "secureOutput": false
         },
-        "name": "Transform",
+        "name": "Ingest",
         "dependsOn": []
       }
     ]
