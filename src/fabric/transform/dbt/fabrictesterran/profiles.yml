@@ -9,8 +9,8 @@ fabrictesterran:
       method: livy
       authentication: CLI
       endpoint: https://api.fabric.microsoft.com/v1
-      workspaceid: <<FABRIC_WORKSPACE_ID>>
-      lakehouseid: <<SILVER_LAKEHOUSE_ID>>
+      workspaceid: efce90bf-d5cf-41ce-bb1f-d83e2889332f
+      lakehouseid: 518bbef5-789d-4b75-b7f4-7a9a1628e010
       lakehouse: lh_silver
       schema: dbo
       threads: 1
@@ -25,8 +25,8 @@ fabrictesterran:
       method: livy
       authentication: fabric_notebook
       endpoint: https://api.fabric.microsoft.com/v1
-      workspaceid: <<FABRIC_WORKSPACE_ID>>
-      lakehouseid: <<SILVER_LAKEHOUSE_ID>>
+      workspaceid: efce90bf-d5cf-41ce-bb1f-d83e2889332f
+      lakehouseid: 518bbef5-789d-4b75-b7f4-7a9a1628e010
       lakehouse: lh_silver
       schema: dbo
       threads: 1

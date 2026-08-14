@@ -76,11 +76,13 @@ model → silver model → gold model → schema/test yml, then delete `stg_dumm
    sync.
 2. **Production workspaces**: create `ingest-prod`, `lakehouse-prod`, `transform-prod`, `ops-prod`,
    `semantic-prod`. Do **not** Git-link these — they're populated only by `deploy-production.yml`.
-3. **Placeholders**: once the acceptance workspaces/lakehouses exist, fill in
-   `<<FABRIC_WORKSPACE_ID>>`, `<<SILVER_LAKEHOUSE_ID>>` in `profiles.yml`, and
-   `<<TRANSFORM_NOTEBOOK_ID>>` in `pl_scheduled_transform`'s pipeline definition (the ones in
-   `config/parameter.yml` are resolved automatically at deploy time, or filled in by hand once the
-   production items they reference exist — see the comments there).
+3. **Placeholders**: `profiles.yml`'s `workspaceid`/`lakehouseid` are already filled in with the real
+   acceptance workspace/lakehouse GUIDs (dbt-fabricspark validates these are real UUIDs, so a
+   placeholder string fails immediately — `config/parameter.yml`'s `find_value`s were updated to match
+   so the production deploy still swaps them for prod's own IDs). Still to fill in:
+   `<<TRANSFORM_NOTEBOOK_ID>>` in `pl_scheduled_transform`'s pipeline definition (the ops-side entries
+   in `config/parameter.yml` are filled in by hand once the production items they reference exist —
+   see the comments there).
 4. **CI/CD**: register an Entra ID app registration with federated credentials (OIDC) for GitHub
    Actions, add its client/tenant/subscription IDs as repo variables, and create a `production`
    GitHub Environment with an approval gate.

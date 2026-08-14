@@ -11,12 +11,15 @@
 # once transform-prod exists.
 
 find_replace:
-  - find_value: "<<FABRIC_WORKSPACE_ID>>"
+  # These two find_values are the real acceptance workspace/lakehouse IDs, since profiles.yml has to
+  # carry real UUIDs for dbt-fabricspark to accept it (it validates the format at parse time — a
+  # placeholder string fails immediately). fabric-cicd swaps them for prod's own IDs at deploy time.
+  - find_value: "efce90bf-d5cf-41ce-bb1f-d83e2889332f"
     replace_value:
       prod: "$workspace.$id"
     file_path: ".*profiles\\.yml"
 
-  - find_value: "<<SILVER_LAKEHOUSE_ID>>"
+  - find_value: "518bbef5-789d-4b75-b7f4-7a9a1628e010"
     replace_value:
       prod: "$items.Lakehouse.lh_silver.$id"
     file_path: ".*profiles\\.yml"
