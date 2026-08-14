@@ -18,6 +18,8 @@ fabrictesterran:
       reuse_session: false
       connect_timeout: 60
       connect_retries: 3
+      spark_config:
+        name: fabrictesterran-cli
 
     # Execution inside the Fabric notebook itself: uses the notebook's own identity, no secrets.
     fabric_notebook:
@@ -34,3 +36,5 @@ fabrictesterran:
       reuse_session: false
       connect_timeout: 60
       connect_retries: 3
+      spark_config:
+        name: fabrictesterran-notebook

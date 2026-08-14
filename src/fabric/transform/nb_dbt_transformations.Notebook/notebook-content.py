@@ -45,7 +45,7 @@
 
 # CELL ********************
 
-%pip install -U dbt-fabricspark
+%pip install dbt-fabricspark==1.12.9
 
 # METADATA ********************
 
