@@ -91,6 +91,18 @@ display(df)
 
 # CELL ********************
 
+spark.sql("""
+    CREATE TABLE IF NOT EXISTS lh_bronze.dbo.raw_products (
+        product_id INT,
+        product_name STRING,
+        category STRING,
+        unit_price DOUBLE,
+        is_active BOOLEAN,
+        source_system STRING,
+        ingested_at TIMESTAMP
+    ) USING DELTA
+""")
+
 target_table = "lh_bronze.dbo.raw_products"
 (
     df.write.mode("overwrite")

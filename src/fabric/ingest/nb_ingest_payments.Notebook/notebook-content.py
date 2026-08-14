@@ -58,6 +58,19 @@ ORDER_LINES_TABLE = "lh_bronze.dbo.raw_order_lines"
 TARGET_TABLE = "lh_bronze.dbo.raw_payments"
 PAYMENT_METHODS = ["ideal", "credit_card", "paypal", "bank_transfer"]
 
+spark.sql("""
+    CREATE TABLE IF NOT EXISTS lh_bronze.dbo.raw_payments (
+        payment_id INT,
+        order_id INT,
+        payment_date TIMESTAMP,
+        amount DOUBLE,
+        payment_method STRING,
+        payment_status STRING,
+        updated_at TIMESTAMP,
+        source_system STRING
+    ) USING DELTA
+""")
+
 assert spark.catalog.tableExists(ORDERS_TABLE), f"{ORDERS_TABLE} doesn't exist yet — run nb_ingest_sales_orders first."
 
 all_order_ids = [r.order_id for r in spark.table(ORDERS_TABLE).select("order_id").distinct().collect()]

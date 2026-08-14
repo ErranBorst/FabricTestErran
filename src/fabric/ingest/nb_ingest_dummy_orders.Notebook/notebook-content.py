@@ -74,6 +74,20 @@ display(df)
 
 # CELL ********************
 
+spark.sql("""
+    CREATE TABLE IF NOT EXISTS lh_bronze.dbo.raw_orders (
+        order_id INT,
+        customer_id INT,
+        product_category STRING,
+        quantity INT,
+        unit_price DOUBLE,
+        order_status STRING,
+        order_date DATE,
+        source_system STRING,
+        ingested_at TIMESTAMP
+    ) USING DELTA
+""")
+
 (
     df.write.mode("overwrite")
     .format("delta")

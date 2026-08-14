@@ -53,6 +53,18 @@ ORDERS_TABLE = "lh_bronze.dbo.raw_sales_orders"
 PRODUCTS_TABLE = "lh_bronze.dbo.raw_products"
 TARGET_TABLE = "lh_bronze.dbo.raw_order_lines"
 
+spark.sql("""
+    CREATE TABLE IF NOT EXISTS lh_bronze.dbo.raw_order_lines (
+        order_line_id INT,
+        order_id INT,
+        product_id INT,
+        quantity INT,
+        unit_price DOUBLE,
+        source_system STRING,
+        ingested_at TIMESTAMP
+    ) USING DELTA
+""")
+
 assert spark.catalog.tableExists(ORDERS_TABLE), f"{ORDERS_TABLE} doesn't exist yet — run nb_ingest_sales_orders first."
 assert spark.catalog.tableExists(PRODUCTS_TABLE), f"{PRODUCTS_TABLE} doesn't exist yet — run nb_ingest_products first."
 

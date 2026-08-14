@@ -58,6 +58,19 @@ COUNTRIES = ["NL", "BE", "DE", "FR", "GB", "US"]
 STATUSES = ["created", "shipped", "delivered", "cancelled"]
 STATUS_WEIGHTS = [0.35, 0.25, 0.35, 0.05]
 
+spark.sql("""
+    CREATE TABLE IF NOT EXISTS lh_bronze.dbo.raw_sales_orders (
+        order_id INT,
+        customer_id INT,
+        order_date TIMESTAMP,
+        order_status STRING,
+        shipping_country STRING,
+        batch_id INT,
+        source_system STRING,
+        ingested_at TIMESTAMP
+    ) USING DELTA
+""")
+
 if spark.catalog.tableExists(TARGET_TABLE):
     existing = spark.table(TARGET_TABLE)
     last_order_id = existing.selectExpr("max(order_id) as m").collect()[0]["m"] or 0

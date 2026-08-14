@@ -95,6 +95,20 @@ display(df)
 
 # CELL ********************
 
+spark.sql("""
+    CREATE TABLE IF NOT EXISTS lh_bronze.dbo.raw_customers (
+        customer_id INT,
+        first_name STRING,
+        last_name STRING,
+        email STRING,
+        country STRING,
+        customer_segment STRING,
+        signup_date DATE,
+        source_system STRING,
+        ingested_at TIMESTAMP
+    ) USING DELTA
+""")
+
 target_table = "lh_bronze.dbo.raw_customers"
 (
     df.write.mode("overwrite")
