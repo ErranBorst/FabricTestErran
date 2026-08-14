@@ -12,7 +12,7 @@ models over `lh_gold`.
 src/fabric/
   ingest/     nb_ingest_dummy_orders.Notebook  — seeds the example dataset (stand-in for a real source)
   lakehouse/  lh_bronze / lh_silver / lh_gold Lakehouse items
-  transform/  nb_dbt_transformations.Notebook (runs the dbt project) + env_dbt.Environment
+  transform/  dbt/fabrictesterran (the dbt project) + nb_dbt_transformations.Notebook (runs it) + env_dbt.Environment
   ops/        pl_scheduled_transform.DataPipeline (triggers the dbt-run notebook)
   semantic/   reserved for the future Direct Lake semantic model + reports
 docs/         naming-conventions.md, dbt-conventions.md
@@ -34,7 +34,7 @@ Fabric workspace (`<function>-<environment>`, e.g. `lakehouse-acc`) — see "Man
 ## Running dbt locally
 
 ```bash
-cd "src/fabric/transform/nb_dbt_transformations.Notebook/Resources/builtin/dbt/fabrictesterran"
+cd "src/fabric/transform/dbt/fabrictesterran"
 az login
 pip install -r requirements-dev.txt
 dbt deps
@@ -53,10 +53,13 @@ Fabric identity (`fabric_notebook` target — no secrets). `pl_scheduled_transfo
 will eventually trigger it on a schedule.
 
 This downloads from GitHub instead of copying from Fabric's built-in Notebook Resources
-(`Resources/builtin/`, the architecture's original design) because that Fabric feature did not
-reliably sync nested resource files into the notebook item in testing — see the comment in
-`notebook-content.py` for details. The dbt project's source of truth is still the same
-`Resources/builtin/dbt/fabrictesterran/` path in this repo either way.
+(`Resources/builtin/`, the architecture's original design) for two reasons: that Fabric feature did
+not reliably sync nested resource files into the notebook item in testing, and — worse — anything
+committed inside a Fabric item's own folder gets overwritten by Fabric's *own* git commit-back on the
+next workspace sync, which silently deleted the whole dbt project from Git once it was placed there.
+That's why the dbt project now lives at `src/fabric/transform/dbt/fabrictesterran/`, a plain folder
+next to (not inside) `nb_dbt_transformations.Notebook/` — Fabric's Git sync only manages recognized
+item folders (`*.Notebook`, `*.Lakehouse`, etc.), so a plain folder next to one is never touched by it.
 
 ## Adding a new business entity
 

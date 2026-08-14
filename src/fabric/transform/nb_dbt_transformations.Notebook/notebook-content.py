@@ -27,12 +27,14 @@
 # followed by `dbt build`. Uses the notebook's own Fabric identity (authentication: fabric_notebook)
 # — no secrets, no interactive login.
 #
-# This fetches from GitHub instead of Fabric's built-in Notebook Resources (Resources/builtin) because
-# that feature did not reliably sync nested resource files into this notebook item in testing — the
-# `builtin` folder was created but stayed empty even after re-enabling it and recreating the item.
-# Revisit once that Fabric feature proves reliable; the dbt project's source of truth stays at
-# src/fabric/transform/nb_dbt_transformations.Notebook/Resources/builtin/dbt/fabrictesterran/ in Git
-# either way, so nothing else about the project layout needs to change if we switch back.
+# This fetches from GitHub instead of Fabric's built-in Notebook Resources (Resources/builtin) for two
+# reasons: that feature did not reliably sync nested resource files into this notebook item in
+# testing (the `builtin` folder was created but stayed empty), and — more importantly — anything
+# inside a Fabric item's own folder (<name>.Notebook/, .Lakehouse/, etc.) gets overwritten by Fabric's
+# own git commit-back on the next workspace sync, which silently deleted the whole dbt project from
+# Git once. The dbt project now lives at src/fabric/transform/dbt/fabrictesterran/ — a plain folder
+# next to this notebook item, not inside it — specifically so Fabric's git sync has no item to
+# recognize there and leaves it alone.
 
 # METADATA ********************
 
@@ -65,7 +67,7 @@ GITHUB_REPO = "FabricTestErran"
 GITHUB_REF = "acceptance"  # fabric-cicd's config/parameter.yml overrides this for the prod deploy
 
 PROJECT_NAME = "fabrictesterran"
-DBT_PROJECT_PATH_IN_REPO = f"src/fabric/transform/nb_dbt_transformations.Notebook/Resources/builtin/dbt/{PROJECT_NAME}"
+DBT_PROJECT_PATH_IN_REPO = f"src/fabric/transform/dbt/{PROJECT_NAME}"
 WORKING_DBT_DIR = Path("/tmp") / PROJECT_NAME
 
 archive_url = f"https://codeload.github.com/{GITHUB_OWNER}/{GITHUB_REPO}/tar.gz/refs/heads/{GITHUB_REF}"
