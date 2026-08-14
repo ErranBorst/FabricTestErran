@@ -1,0 +1,32 @@
+# fabric-cicd find-and-replace rules, applied to item definitions at deploy time.
+# Reference: https://microsoft.github.io/fabric-cicd/latest/how_to/parameterization/
+#
+# Two tiers only: acceptance is Git-linked directly in the Fabric portal (no fabric-cicd deploy step
+# — Fabric syncs it automatically), so the values checked into src/fabric ARE the acceptance values.
+# fabric-cicd only ever runs for the production deploy, resolving GUIDs dynamically via its built-in
+# tokens wherever possible so nobody has to look up and paste one by hand. Only a genuinely
+# cross-workspace reference (the ops pipeline's notebook activity, which points at the *transform*
+# workspace while the pipeline itself deploys into the *ops* workspace) can't be resolved by a token
+# scoped to the item being deployed — those two entries stay as placeholders until filled in by hand
+# once transform-prod exists.
+
+find_replace:
+  - find_value: "<<FABRIC_WORKSPACE_ID>>"
+    replace_value:
+      prod: "$workspace.$id"
+    file_path: ".*profiles\\.yml"
+
+  - find_value: "<<SILVER_LAKEHOUSE_ID>>"
+    replace_value:
+      prod: "$items.Lakehouse.lh_silver.$id"
+    file_path: ".*profiles\\.yml"
+
+  - find_value: "<<TRANSFORM_NOTEBOOK_ID>>"
+    replace_value:
+      prod: "<<PROD_TRANSFORM_NOTEBOOK_ID>>"
+    item_type: "DataPipeline"
+
+  - find_value: "00000000-0000-0000-0000-000000000000"
+    replace_value:
+      prod: "<<PROD_TRANSFORM_WORKSPACE_ID>>"
+    item_type: "DataPipeline"

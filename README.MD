@@ -1,30 +1,77 @@
-# Fabric ETL Project
+# FabricTestErran
 
-This repository contains a starter Microsoft Fabric ETL project with dedicated layers for ingest, lakehouse design, operations, semantic outputs, and dbt-based transformations.
-
-## Fabric Git Integration
-
-Connect the Fabric workspace to the `fabric-workspace` folder in this repository, not to the repository root.
-
-- `fabric-workspace` contains Fabric-recognizable Git item folders such as `.Notebook`, `.Lakehouse`, and `.DataPipeline` items.
-- `src/Fabric` remains the engineering project tree with supporting notebooks, dbt code, templates, and documentation.
-- Generic project files in `src/Fabric` are useful for development, but Fabric Source Control does not import them as workspace items unless they are expressed in Fabric item format.
+A Microsoft Fabric + dbt medallion (bronze → silver → gold) data platform, following the reference
+architecture documented in the Customer-Hillfresh-Fabric repo's `docs/architecture-template/`. One
+dbt project runs on Spark inside Fabric (`dbt-fabricspark`, method `livy`); ingestion lands data in
+`lh_bronze`, dbt owns bronze→silver→gold, and reporting will eventually sit on Direct Lake semantic
+models over `lh_gold`.
 
 ## Structure
 
-- `fabric-workspace`: Fabric Git sync root with supported item definitions.
-- `src/Fabric/ingest`: notebooks that land raw data into a Fabric lakehouse.
-- `src/Fabric/lakehouse`: documentation for the intended bronze, silver, and gold lakehouse layout.
-- `src/Fabric/ops`: orchestration and operational templates.
-- `src/Fabric/semantic`: semantic model starter definitions for reporting.
-- `src/Fabric/transform`: a dbt Fabric Spark project and the notebook used to run it inside Fabric.
+```
+src/fabric/
+  ingest/     nb_ingest_dummy_orders.Notebook  — seeds the example dataset (stand-in for a real source)
+  lakehouse/  lh_bronze / lh_silver / lh_gold Lakehouse items
+  transform/  nb_dbt_transformations.Notebook (runs the dbt project) + env_dbt.Environment
+  ops/        pl_scheduled_transform.DataPipeline (triggers the dbt-run notebook)
+  semantic/   reserved for the future Direct Lake semantic model + reports
+docs/         naming-conventions.md, dbt-conventions.md
+config/       parameter.yml — fabric-cicd GUID substitution for the production deploy
+scripts/      deploy_fabric_items.py — fabric-cicd deploy wrapper used by CI
+.github/workflows/  deploy-production.yml
+```
 
-## Quick start
+Two environments only — no separate `dev` tier:
 
-1. Open `src/Fabric/ingest/notebooks/01_ingest_dummy_orders_to_lakehouse.ipynb` in Fabric and run it against an attached lakehouse.
-2. Update the variables in `src/Fabric/transform/notebooks/run_dbt_fabricspark.ipynb` with your workspace and lakehouse values.
-3. Run the dbt notebook to execute `dbt debug`, `dbt deps`, and `dbt build`.
+- **acceptance**: Git-linked directly in the Fabric portal. This is where you work day to day; there
+  is no CI step for it, the same way a `dev` workspace would normally need none.
+- **production**: never Git-linked. Reached only through `deploy-production.yml`, gated by a GitHub
+  Environment approval, triggered from a `release/*` branch.
 
-## dbt integration
+Each `src/fabric/<function>` folder is the intended Git-sync root for its own `<function>-acceptance`
+Fabric workspace (`<function>-<environment>`, e.g. `lakehouse-acc`) — see "Manual follow-up" below.
 
-The transform layer uses `dbt-fabricspark`, which is the correct dbt adapter for Fabric Lakehouse through Spark. The notebook integration is configured for `fabric_notebook` authentication so the dbt run can execute directly inside a Fabric notebook runtime.
+## Running dbt locally
+
+```bash
+cd "src/fabric/transform/nb_dbt_transformations.Notebook/Resources/builtin/dbt/fabrictesterran"
+az login
+pip install -r requirements-dev.txt
+dbt deps
+dbt build --target acceptance
+```
+
+The `acceptance` target authenticates via your Azure CLI login; `<<FABRIC_WORKSPACE_ID>>` and
+`<<SILVER_LAKEHOUSE_ID>>` in `profiles.yml` need to be filled in with your acceptance
+workspace/lakehouse IDs first (see "Manual follow-up").
+
+## Running it in Fabric
+
+`nb_dbt_transformations.Notebook` copies the dbt project out of its own read-only `Resources/`
+folder into a writable temp directory, then runs `dbt deps` + `dbt build` using the notebook's own
+Fabric identity (`fabric_notebook` target — no secrets). `pl_scheduled_transform` is the pipeline that
+will eventually trigger it on a schedule.
+
+## Adding a new business entity
+
+Follow `docs/dbt-conventions.md` ("Adding a new entity"): bronze source yml entry → bronze staging
+model → silver model → gold model → schema/test yml, then delete `stg_dummy__orders` /
+`nb_ingest_dummy_orders.Notebook` / the `orders` example models once a real entity replaces them.
+
+## Manual follow-up (not doable via file edits)
+
+1. **Acceptance workspaces**: create Fabric workspaces `ingest-acc`, `lakehouse-acc`,
+   `transform-acc`, `ops-acc`, `semantic-acc` (repurpose/rename the existing single workspace as one
+   of these), and connect each one's Git integration to its matching `src/fabric/<function>` folder —
+   Fabric binds one workspace to one folder, so 5 separate connections replace the old single-folder
+   sync.
+2. **Production workspaces**: create `ingest-prod`, `lakehouse-prod`, `transform-prod`, `ops-prod`,
+   `semantic-prod`. Do **not** Git-link these — they're populated only by `deploy-production.yml`.
+3. **Placeholders**: once the acceptance workspaces/lakehouses exist, fill in
+   `<<FABRIC_WORKSPACE_ID>>`, `<<SILVER_LAKEHOUSE_ID>>` in `profiles.yml`, and
+   `<<TRANSFORM_NOTEBOOK_ID>>` in `pl_scheduled_transform`'s pipeline definition (the ones in
+   `config/parameter.yml` are resolved automatically at deploy time, or filled in by hand once the
+   production items they reference exist — see the comments there).
+4. **CI/CD**: register an Entra ID app registration with federated credentials (OIDC) for GitHub
+   Actions, add its client/tenant/subscription IDs as repo variables, and create a `production`
+   GitHub Environment with an approval gate.

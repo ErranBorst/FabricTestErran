@@ -1,0 +1,45 @@
+name: Deploy to production
+
+on:
+  push:
+    branches: ["release/*"]
+    paths: [src/fabric/**, config/parameter.yml]
+
+# Two tiers only: acceptance is Git-linked directly in the Fabric portal (no CI job needed — Fabric
+# syncs it automatically), so this is the only deployment workflow in the repo. It deploys only what
+# the triggering release/* branch contains — production is never an automatic promotion of everything
+# currently in acceptance.
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+    strategy:
+      max-parallel: 1
+      matrix:
+        function: [lakehouse, ingest, transform, ops]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install fabric-cicd azure-identity requests
+
+      - uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy ${{ matrix.function }}-prod
+        run: |
+          python scripts/deploy_fabric_items.py \
+            --environment prod \
+            --workspace-name ${{ matrix.function }}-prod \
+            --repository-directory src/fabric/${{ matrix.function }}

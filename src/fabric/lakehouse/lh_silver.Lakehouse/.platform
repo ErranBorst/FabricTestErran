@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Lakehouse",
+    "displayName": "lh_silver",
+    "description": "Harmonised business-entity lakehouse: dbt silver models land here."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "650ef234-b8e3-4850-a99c-d722ca6f5228"
+  }
+}

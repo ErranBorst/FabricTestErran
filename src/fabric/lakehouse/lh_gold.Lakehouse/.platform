@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Lakehouse",
+    "displayName": "lh_gold",
+    "description": "Presentation-layer lakehouse: thin dbt gold models feed Direct Lake semantic models."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "d6ebf77f-c0ba-4820-92fc-336e82f1f273"
+  }
+}
