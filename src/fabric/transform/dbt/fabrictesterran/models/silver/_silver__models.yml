@@ -1,0 +1,27 @@
+version: 2
+
+models:
+  - name: orders
+    description: One row per order line, deduplicated and keyed. The example silver entity.
+    columns:
+      - name: order_key
+        description: Surrogate key generated from order_id + source_system.
+        data_tests:
+          - unique
+          - not_null
+      - name: order_id
+        data_tests:
+          - not_null
+      - name: customer_id
+        data_tests:
+          - not_null
+      - name: order_status
+        data_tests:
+          - not_null
+          - accepted_values:
+              values: ['created', 'shipped', 'delivered', 'cancelled']
+      - name: order_date
+        data_tests:
+          - not_null
+          - not_before_date:
+              min_date: '2020-01-01'
