@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Lakehouse",
+    "displayName": "lh_bronze",
+    "description": "Raw landing-zone lakehouse: shortcuts into the source(s) plus the dbt bronze sources."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "f4153368-51f4-4bbc-b529-a6d0bc1d4db4"
+  }
+}

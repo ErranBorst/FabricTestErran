@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "nb_dbt_transformations",
+    "description": "Copies the built-in dbt project to a writable directory and runs dbt build inside Fabric."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "5bf908da-2500-4db7-8fa4-528ad9eaf801"
+  }
+}

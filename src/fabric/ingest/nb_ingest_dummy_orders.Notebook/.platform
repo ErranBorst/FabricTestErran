@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "nb_ingest_dummy_orders",
+    "description": "Seeds a dummy orders dataset as a Delta table in lh_bronze. Stands in for a real source connection (mirroring/shortcut) until one exists."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "d1c7eab4-3220-4ccd-8c86-b5947bb2d6a1"
+  }
+}

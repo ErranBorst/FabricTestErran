@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Environment",
+    "displayName": "env_dbt",
+    "description": "Spark environment used by nb_dbt_transformations to run the dbt build."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "7cec43e5-8edc-4329-859b-102adb6bc6c6"
+  }
+}

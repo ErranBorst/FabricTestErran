@@ -1,0 +1,44 @@
+# fabric-cicd find-and-replace rules, applied to item definitions at deploy time.
+# Reference: https://microsoft.github.io/fabric-cicd/latest/how_to/parameterization/
+#
+# Two tiers only: acceptance is Git-linked directly in the Fabric portal (no fabric-cicd deploy step
+# — Fabric syncs it automatically), so the values checked into src/fabric ARE the acceptance values.
+# fabric-cicd only ever runs for the production deploy, resolving GUIDs dynamically via its built-in
+# tokens wherever possible so nobody has to look up and paste one by hand. Only a genuinely
+# cross-workspace reference (the ops pipeline's notebook activity, which points at the *transform*
+# workspace while the pipeline itself deploys into the *ops* workspace) can't be resolved by a token
+# scoped to the item being deployed — those two entries stay as placeholders until filled in by hand
+# once transform-prod exists.
+
+find_replace:
+  # These two find_values are the real acceptance workspace/lakehouse IDs, since profiles.yml has to
+  # carry real UUIDs for dbt-fabricspark to accept it (it validates the format at parse time — a
+  # placeholder string fails immediately). fabric-cicd swaps them for prod's own IDs at deploy time.
+  - find_value: "efce90bf-d5cf-41ce-bb1f-d83e2889332f"
+    replace_value:
+      prod: "$workspace.$id"
+    file_path: ".*profiles\\.yml"
+
+  - find_value: "518bbef5-789d-4b75-b7f4-7a9a1628e010"
+    replace_value:
+      prod: "$items.Lakehouse.lh_silver.$id"
+    file_path: ".*profiles\\.yml"
+
+  - find_value: "<<TRANSFORM_NOTEBOOK_ID>>"
+    replace_value:
+      prod: "<<PROD_TRANSFORM_NOTEBOOK_ID>>"
+    item_type: "DataPipeline"
+
+  - find_value: "00000000-0000-0000-0000-000000000000"
+    replace_value:
+      prod: "<<PROD_TRANSFORM_WORKSPACE_ID>>"
+    item_type: "DataPipeline"
+
+  # nb_dbt_transformations downloads the dbt project from GitHub at runtime (see the comment in that
+  # notebook for why) rather than via Fabric's built-in Notebook Resources. GITHUB_REF defaults to the
+  # acceptance branch; point it at whatever branch/tag the release/* deploy actually shipped.
+  - find_value: 'GITHUB_REF = "acceptance"'
+    replace_value:
+      prod: 'GITHUB_REF = "<<PROD_RELEASE_REF>>"'
+    item_type: "Notebook"
+    item_name: "nb_dbt_transformations"

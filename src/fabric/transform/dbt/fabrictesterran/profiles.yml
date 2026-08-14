@@ -1,0 +1,40 @@
+fabrictesterran:
+  target: acceptance
+  outputs:
+
+    # Local/CLI development against the acceptance workspace (the only Git-linked, live-development
+    # tier — there is no separate dev workspace): authenticate with `az login` first.
+    acceptance:
+      type: fabricspark
+      method: livy
+      authentication: CLI
+      endpoint: https://api.fabric.microsoft.com/v1
+      workspaceid: efce90bf-d5cf-41ce-bb1f-d83e2889332f
+      lakehouseid: 518bbef5-789d-4b75-b7f4-7a9a1628e010
+      lakehouse: lh_silver
+      schema: dbo
+      threads: 1
+      retry_all: true
+      reuse_session: false
+      connect_timeout: 60
+      connect_retries: 3
+      spark_config:
+        name: fabrictesterran-cli
+
+    # Execution inside the Fabric notebook itself: uses the notebook's own identity, no secrets.
+    fabric_notebook:
+      type: fabricspark
+      method: livy
+      authentication: fabric_notebook
+      endpoint: https://api.fabric.microsoft.com/v1
+      workspaceid: efce90bf-d5cf-41ce-bb1f-d83e2889332f
+      lakehouseid: 518bbef5-789d-4b75-b7f4-7a9a1628e010
+      lakehouse: lh_silver
+      schema: dbo
+      threads: 1
+      retry_all: true
+      reuse_session: false
+      connect_timeout: 60
+      connect_retries: 3
+      spark_config:
+        name: fabrictesterran-notebook

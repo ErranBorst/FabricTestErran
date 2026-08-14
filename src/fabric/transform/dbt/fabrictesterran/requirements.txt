@@ -1,0 +1,1 @@
+dbt-fabricspark[cli]==1.12.9

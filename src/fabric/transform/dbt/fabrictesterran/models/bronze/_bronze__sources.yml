@@ -1,0 +1,31 @@
+version: 2
+
+# Regenerating this file: once a schema-introspection script exists under scripts/, point it at
+# lh_bronze and have it emit this sources block instead of updating it by hand.
+sources:
+  - name: dummy
+    description: Dummy orders dataset seeded by src/fabric/ingest/nb_ingest_dummy_orders.Notebook.
+    database: lh_bronze
+    schema: dbo
+    tables:
+      - name: raw_orders
+        description: One row per order line, as landed by the ingest notebook.
+        columns:
+          - name: order_id
+            data_type: int
+          - name: customer_id
+            data_type: int
+          - name: product_category
+            data_type: string
+          - name: quantity
+            data_type: int
+          - name: unit_price
+            data_type: double
+          - name: order_status
+            data_type: string
+          - name: order_date
+            data_type: date
+          - name: source_system
+            data_type: string
+          - name: ingested_at
+            data_type: timestamp
