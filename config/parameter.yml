@@ -30,3 +30,12 @@ find_replace:
     replace_value:
       prod: "<<PROD_TRANSFORM_WORKSPACE_ID>>"
     item_type: "DataPipeline"
+
+  # nb_dbt_transformations downloads the dbt project from GitHub at runtime (see the comment in that
+  # notebook for why) rather than via Fabric's built-in Notebook Resources. GITHUB_REF defaults to the
+  # acceptance branch; point it at whatever branch/tag the release/* deploy actually shipped.
+  - find_value: 'GITHUB_REF = "acceptance"'
+    replace_value:
+      prod: 'GITHUB_REF = "<<PROD_RELEASE_REF>>"'
+    item_type: "Notebook"
+    item_name: "nb_dbt_transformations"

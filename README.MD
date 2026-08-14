@@ -47,10 +47,16 @@ workspace/lakehouse IDs first (see "Manual follow-up").
 
 ## Running it in Fabric
 
-`nb_dbt_transformations.Notebook` copies the dbt project out of its own read-only `Resources/`
-folder into a writable temp directory, then runs `dbt deps` + `dbt build` using the notebook's own
+`nb_dbt_transformations.Notebook` downloads the dbt project straight from GitHub (this repo is
+public) into a writable temp directory, then runs `dbt deps` + `dbt build` using the notebook's own
 Fabric identity (`fabric_notebook` target — no secrets). `pl_scheduled_transform` is the pipeline that
 will eventually trigger it on a schedule.
+
+This downloads from GitHub instead of copying from Fabric's built-in Notebook Resources
+(`Resources/builtin/`, the architecture's original design) because that Fabric feature did not
+reliably sync nested resource files into the notebook item in testing — see the comment in
+`notebook-content.py` for details. The dbt project's source of truth is still the same
+`Resources/builtin/dbt/fabrictesterran/` path in this repo either way.
 
 ## Adding a new business entity
 
