@@ -29,3 +29,124 @@ sources:
             data_type: string
           - name: ingested_at
             data_type: timestamp
+
+  # A small related dataset for practicing bronze->silver->gold beyond the single dummy.raw_orders
+  # example: two full-load dimensions, two append-only delta facts, and one merge/upsert delta fact.
+  # No staging/silver/gold models exist for these yet — see docs/dbt-conventions.md "Adding a new
+  # entity" and build them the same way stg_dummy__orders -> orders -> orders_gold were built.
+  - name: sales_demo
+    description: Related customers/products/orders/payments dataset seeded by the nb_ingest_* notebooks in src/fabric/ingest/.
+    database: lh_bronze
+    schema: dbo
+    tables:
+      - name: raw_customers
+        description: >
+          Customer dimension. Full load — nb_ingest_customers overwrites the whole table every run,
+          so there's no history to reconcile; treat it as always-current.
+        columns:
+          - name: customer_id
+            data_type: int
+          - name: first_name
+            data_type: string
+          - name: last_name
+            data_type: string
+          - name: email
+            data_type: string
+          - name: country
+            data_type: string
+          - name: customer_segment
+            data_type: string
+          - name: signup_date
+            data_type: date
+          - name: source_system
+            data_type: string
+          - name: ingested_at
+            data_type: timestamp
+
+      - name: raw_products
+        description: >
+          Product dimension. Full load, same pattern as raw_customers. `is_active = false` for
+          discontinued products — useful for testing left-join/filter behavior downstream.
+        columns:
+          - name: product_id
+            data_type: int
+          - name: product_name
+            data_type: string
+          - name: category
+            data_type: string
+          - name: unit_price
+            data_type: double
+          - name: is_active
+            data_type: boolean
+          - name: source_system
+            data_type: string
+          - name: ingested_at
+            data_type: timestamp
+
+      - name: raw_sales_orders
+        description: >
+          Order header. Delta/append load — nb_ingest_sales_orders appends a new batch of orders
+          every run rather than overwriting, so this table only grows. `batch_id` identifies which
+          run added a given row; useful for building an incremental silver model keyed off it.
+        columns:
+          - name: order_id
+            data_type: int
+          - name: customer_id
+            data_type: int
+          - name: order_date
+            data_type: timestamp
+          - name: order_status
+            data_type: string
+          - name: shipping_country
+            data_type: string
+          - name: batch_id
+            data_type: int
+          - name: source_system
+            data_type: string
+          - name: ingested_at
+            data_type: timestamp
+
+      - name: raw_order_lines
+        description: >
+          Order line items, one or more per order. Delta/append load — nb_ingest_order_lines only
+          generates lines for orders that don't have any yet, so it's safe to re-run.
+        columns:
+          - name: order_line_id
+            data_type: int
+          - name: order_id
+            data_type: int
+          - name: product_id
+            data_type: int
+          - name: quantity
+            data_type: int
+          - name: unit_price
+            data_type: double
+          - name: source_system
+            data_type: string
+          - name: ingested_at
+            data_type: timestamp
+
+      - name: raw_payments
+        description: >
+          Payment per order. Delta/merge load — nb_ingest_payments genuinely upserts via a Delta
+          MERGE: existing `pending` rows can transition to `paid`/`failed` in place (same
+          `payment_id`, changed `payment_status`/`updated_at`), and new orders get a new row. This is
+          the one bronze table where a given row's content can change between runs — worth comparing
+          against raw_sales_orders/raw_order_lines, where rows are immutable once written.
+        columns:
+          - name: payment_id
+            data_type: int
+          - name: order_id
+            data_type: int
+          - name: payment_date
+            data_type: timestamp
+          - name: amount
+            data_type: double
+          - name: payment_method
+            data_type: string
+          - name: payment_status
+            data_type: string
+          - name: updated_at
+            data_type: timestamp
+          - name: source_system
+            data_type: string

@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "nb_ingest_sales_orders",
+    "description": "Delta/append load: appends a new batch of orders to lh_bronze on every run instead of overwriting."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "5be6a801-593a-47d7-ae4a-0868ee18f4e5"
+  }
+}

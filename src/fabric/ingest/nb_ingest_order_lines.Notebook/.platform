@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "nb_ingest_order_lines",
+    "description": "Delta/append load: appends order line items for existing orders, referencing raw_sales_orders and raw_products."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "dcfc6812-a9fd-4a72-b6fc-f625f591ca0d"
+  }
+}

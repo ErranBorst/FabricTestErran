@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "nb_ingest_payments",
+    "description": "Delta/merge load: upserts payment rows in lh_bronze — existing pending payments transition status, new orders get a new payment row."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "23a38361-d2c6-4d38-8efd-470dfc91a74e"
+  }
+}

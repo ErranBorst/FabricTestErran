@@ -1,0 +1,12 @@
+{
+  "$schema": "https://developer.microsoft.com/json-schemas/fabric/gitIntegration/platformProperties/2.0.0/schema.json",
+  "metadata": {
+    "type": "Notebook",
+    "displayName": "nb_ingest_products",
+    "description": "Full-load: seeds/refreshes the products dimension in lh_bronze. Overwritten in full every run."
+  },
+  "config": {
+    "version": "2.0",
+    "logicalId": "2d43bc13-fea7-4641-945f-3f149395a2da"
+  }
+}
